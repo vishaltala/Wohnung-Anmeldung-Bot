@@ -9,11 +9,9 @@ from email.mime.multipart import MIMEMultipart
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
 
 SMTP_USER    = os.environ["SMTP_USER"]
 SMTP_PASS    = os.environ["SMTP_PASS"]
@@ -35,8 +33,7 @@ def get_driver():
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
     )
-    service = Service(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=options)
+    return webdriver.Chrome(options=options)
 
 
 def wait_sec(seconds=2):
@@ -118,13 +115,13 @@ def navigate_and_get_date(driver) -> datetime | None:
 
 
 def send_alert(appt_date: datetime) -> None:
-    subject = "Early Appointment available - Wohnungsanmeldung - Kar jaldi Book!"
+    subject = "Buergeramt Termin verfuegbar - Wohnungsanmeldung - Jetzt buchen!"
     body = (
-        f"Hallo Bhaiyaji,\n\n"
-        f"Tamari Dharmpatni mate ek veli appointment male chhe!\n\n"
-        f"  Navi appointment: {appt_date.strftime('%d.%m.%Y')}\n\n"
-        f"Joti hoy to jaldi lai le\n{BOOKING_URL}\n\n"
-        f"(Aa ek Automatic alert chhe!!)\n"
+        f"Hallo Vishal,\n\n"
+        f"ein Termin im Buergeramt Ingolstadt fuer Wohnungsanmeldung ist jetzt frueher verfuegbar:\n\n"
+        f"  Naechster Termin: {appt_date.strftime('%d.%m.%Y')}\n\n"
+        f"Jetzt buchen:\n{BOOKING_URL}\n\n"
+        f"(Automatischer Alert - Termin innerhalb der naechsten 7 Tage.)\n"
     )
 
     recipients = [ALERT_EMAIL]
