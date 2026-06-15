@@ -35,7 +35,8 @@ In the repo settings, add these secrets:
 |----------------|---------------------------------------|
 | `SMTP_USER`   | Gmail address used to send the alert  |
 | `SMTP_PASS`   | Gmail app password                    |
-| `ALERT_EMAIL` | Email address to receive alerts       |
+| `ALERT_EMAIL` | Primary email address to receive alerts |
+| `ALERT_EMAIL2` | Second email address to receive alerts (optional) |
 
 ### 2. Create a GitHub Personal Access Token
 
@@ -46,7 +47,7 @@ In the repo settings, add these secrets:
 ### 3. Set up cron-job.org
 
 - Create a new cronjob with:
-  - **URL:** `https://api.github.com/repos/vishaltala/Wohnung-Anmeldung-Bot/actions/workflows/wohnung_bot.yml/dispatches`
+  - **URL:** `https://api.github.com/repos/vishaltala/Wohnung-Bot/actions/workflows/wohnung_bot.yml/dispatches`
   - **Method:** POST
   - **Headers:**
     ```
