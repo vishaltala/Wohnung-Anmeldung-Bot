@@ -119,7 +119,7 @@ def navigate_and_get_date(driver) -> datetime | None:
 def send_alert(appt_date: datetime) -> None:
     subject = "Buergeramt Termin verfuegbar - Wohnungsanmeldung - Jetzt buchen!"
     body = (
-        f"Hallo Vishal,\n\n"
+        f"Hallo Bhaiya,\n\n"
         f"ein Termin im Buergeramt Ingolstadt fuer Wohnungsanmeldung ist jetzt frueher verfuegbar:\n\n"
         f"  Naechster Termin: {appt_date.strftime('%d.%m.%Y')}\n\n"
         f"Jetzt buchen:\n{BOOKING_URL}\n\n"
