@@ -19,7 +19,7 @@ ALERT_EMAIL  = os.environ["ALERT_EMAIL"]
 ALERT_EMAIL2 = os.environ.get("ALERT_EMAIL2", "")
 
 BASE_URL    = "https://www.ingolstadt.de/tevisweb/"
-BOOKING_URL = "https://www.ingolstadt.de/termin"
+#BOOKING_URL = "https://www.ingolstadt.de/termin"
 
 
 def get_driver():
@@ -109,6 +109,7 @@ def navigate_and_get_date(driver) -> datetime | None:
     except Exception:
         print("  No Hinweis popup found (or already dismissed).")
     wait_sec(3)
+    BOOKING_URL = driver.current_url
     print(f"  URL after OK: {driver.current_url}")
 
     print("Step 5: Parsing date...")
