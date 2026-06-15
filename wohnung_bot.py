@@ -19,7 +19,6 @@ ALERT_EMAIL  = os.environ["ALERT_EMAIL"]
 ALERT_EMAIL2 = os.environ.get("ALERT_EMAIL2", "")
 
 BASE_URL    = "https://www.ingolstadt.de/tevisweb/"
-BOOKING_URL = "https://www.ingolstadt.de/termin"
 
 
 def get_driver():
@@ -123,7 +122,7 @@ def navigate_and_get_date(driver) -> tuple[datetime | None, str]:
     wait_sec(2)
 
     body_text = driver.find_element(By.TAG_NAME, "body").text
-    return parse_date_from_text(body_text), BOOKING_URL
+    return parse_date_from_text(body_text), driver.current_url
 
 
 def send_alert(appt_date: datetime, booking_url: str) -> None:
