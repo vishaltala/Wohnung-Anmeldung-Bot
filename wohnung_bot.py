@@ -15,9 +15,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-SMTP_USER   = os.environ["SMTP_USER"]
-SMTP_PASS   = os.environ["SMTP_PASS"]
-ALERT_EMAIL = os.environ["ALERT_EMAIL"]
+SMTP_USER    = os.environ["SMTP_USER"]
+SMTP_PASS    = os.environ["SMTP_PASS"]
+ALERT_EMAIL  = os.environ["ALERT_EMAIL"]
+ALERT_EMAIL2 = os.environ.get("ALERT_EMAIL2", "")
 
 BASE_URL    = "https://www.ingolstadt.de/tevisweb/"
 BOOKING_URL = "https://www.ingolstadt.de/termin"
@@ -117,23 +118,28 @@ def navigate_and_get_date(driver) -> datetime | None:
 
 
 def send_alert(appt_date: datetime) -> None:
-    subject = "Buergeramt Termin verfuegbar - Wohnungsanmeldung - Jetzt buchen!"
+    subject = "Early Appointment available - Wohnungsanmeldung - Kar jaldi Book!"
     body = (
-        f"Hallo Bhaiya,\n\n"
-        f"ein Termin im Buergeramt Ingolstadt fuer Wohnungsanmeldung ist jetzt frueher verfuegbar:\n\n"
-        f"  Naechster Termin: {appt_date.strftime('%d.%m.%Y')}\n\n"
-        f"Jetzt buchen:\n{BOOKING_URL}\n\n"
-        f"(Automatischer Alert - Termin innerhalb der naechsten 7 Tage.)\n"
+        f"Hallo Bhaiyaji,\n\n"
+        f"Tamari Dharmpatni mate ek veli appointment male chhe!\n\n"
+        f"  Navi appointment: {appt_date.strftime('%d.%m.%Y')}\n\n"
+        f"Joti hoy to jaldi lai le\n{BOOKING_URL}\n\n"
+        f"(Aa ek Automatic alert chhe!!)\n"
     )
+
+    recipients = [ALERT_EMAIL]
+    if ALERT_EMAIL2:
+        recipients.append(ALERT_EMAIL2)
+
     msg = MIMEMultipart()
     msg["From"]    = SMTP_USER
-    msg["To"]      = ALERT_EMAIL
+    msg["To"]      = ", ".join(recipients)
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain", "utf-8"))
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(SMTP_USER, SMTP_PASS)
-        server.sendmail(SMTP_USER, ALERT_EMAIL, msg.as_string())
-    print(f"Alert sent! Appointment: {appt_date.strftime('%d.%m.%Y')}")
+        server.sendmail(SMTP_USER, recipients, msg.as_string())
+    print(f"Alert sent to {recipients}! Appointment: {appt_date.strftime('%d.%m.%Y')}")
 
 
 def main():
