@@ -46,7 +46,7 @@ In the repo settings, add these secrets:
 ### 3. Set up cron-job.org
 
 - Create a new cronjob with:
-  - **URL:** `https://api.github.com/repos/vishaltala/Wohnung-Anmeldung-Bot//actions/workflows/wohnung_bot.yml/dispatches`
+  - **URL:** `https://api.github.com/repos/vishaltala/Wohnung-Anmeldung-Bot/actions/workflows/wohnung_bot.yml/dispatches`
   - **Method:** POST
   - **Headers:**
     ```
