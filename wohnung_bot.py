@@ -19,7 +19,7 @@ ALERT_EMAIL  = os.environ["ALERT_EMAIL"]
 ALERT_EMAIL2 = os.environ.get("ALERT_EMAIL2", "")
 
 BASE_URL    = "https://www.ingolstadt.de/tevisweb/"
-#BOOKING_URL = "https://www.ingolstadt.de/termin"
+BOOKING_URL = "https://www.ingolstadt.de/termin"
 
 
 def get_driver():
@@ -59,7 +59,7 @@ def parse_date_from_text(text) -> datetime | None:
     return None
 
 
-def navigate_and_get_date(driver) -> datetime | None:
+def navigate_and_get_date(driver) -> tuple[datetime | None, str]:
     W = WebDriverWait(driver, 15)
 
     print("Step 1: Loading homepage...")
@@ -109,7 +109,6 @@ def navigate_and_get_date(driver) -> datetime | None:
     except Exception:
         print("  No Hinweis popup found (or already dismissed).")
     wait_sec(3)
-    global BOOKING_URL = driver.current_url
     print(f"  URL after OK: {driver.current_url}")
 
     print("Step 5: Parsing date...")
@@ -124,19 +123,18 @@ def navigate_and_get_date(driver) -> datetime | None:
     wait_sec(2)
 
     body_text = driver.find_element(By.TAG_NAME, "body").text
-    return parse_date_from_text(body_text)
+    return parse_date_from_text(body_text), BOOKING_URL
 
 
-def send_alert(appt_date: datetime) -> None:
+def send_alert(appt_date: datetime, booking_url: str) -> None:
     subject = "Early Appointment available - Wohnungsanmeldung - Kar jaldi Book!"
     body = (
         f"Hallo Bhaiyaji,\n\n"
         f"Tamari Dharmpatni mate ek veli appointment male chhe!\n\n"
         f"  Navi appointment: {appt_date.strftime('%d.%m.%Y')}\n\n"
-        f"Joti hoy to jaldi lai le\n{BOOKING_URL}\n\n"
+        f"Joti hoy to jaldi lai le\n{booking_url}\n\n"
         f"(Aa ek Automatic alert chhe!!)\n"
     )
-
 
     recipients = [ALERT_EMAIL]
     if ALERT_EMAIL2:
@@ -157,7 +155,7 @@ def main():
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M')}] Checking appointment...")
     driver = get_driver()
     try:
-        appt_date = navigate_and_get_date(driver)
+        appt_date, booking_url = navigate_and_get_date(driver)
     finally:
         driver.quit()
 
@@ -171,7 +169,7 @@ def main():
 
     if days_away <= 7:
         print("Within 7 days! Sending alert...")
-        send_alert(appt_date)
+        send_alert(appt_date, booking_url)
     else:
         print("Not within 7 days. No alert sent.")
 
