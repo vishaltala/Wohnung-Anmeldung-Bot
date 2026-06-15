@@ -168,7 +168,7 @@ def main():
     days_away = (appt_date - today).days
     print(f"Next appointment: {appt_date.strftime('%d.%m.%Y')} ({days_away} days away)")
 
-    if days_away <= 25:
+    if days_away <= 7:
         print("Within 7 days! Sending alert...")
         send_alert(appt_date)
     else:
