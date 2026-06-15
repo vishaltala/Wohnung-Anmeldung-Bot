@@ -96,8 +96,20 @@ def navigate_and_get_date(driver) -> datetime | None:
     wait_sec(1)
     weiter = driver.find_element(By.ID, "WeiterButton")
     driver.execute_script("arguments[0].click();", weiter)
-    wait_sec(5)
+    wait_sec(3)
     print(f"  URL after Weiter: {driver.current_url}")
+
+    print("Step 4b: Handling Hinweis popup (clicking OK)...")
+    try:
+        ok_btn = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "OKButton"))
+        )
+        driver.execute_script("arguments[0].click();", ok_btn)
+        print("  Clicked OK on Hinweis popup.")
+    except Exception:
+        print("  No Hinweis popup found (or already dismissed).")
+    wait_sec(3)
+    print(f"  URL after OK: {driver.current_url}")
 
     print("Step 5: Parsing date...")
     try:
@@ -115,14 +127,15 @@ def navigate_and_get_date(driver) -> datetime | None:
 
 
 def send_alert(appt_date: datetime) -> None:
-    subject = "Buergeramt Termin verfuegbar - Wohnungsanmeldung - Jetzt buchen!"
+    subject = "Early Appointment available - Wohnungsanmeldung - Kar jaldi Book!"
     body = (
-        f"Hallo Vishal,\n\n"
-        f"ein Termin im Buergeramt Ingolstadt fuer Wohnungsanmeldung ist jetzt frueher verfuegbar:\n\n"
-        f"  Naechster Termin: {appt_date.strftime('%d.%m.%Y')}\n\n"
-        f"Jetzt buchen:\n{BOOKING_URL}\n\n"
-        f"(Automatischer Alert - Termin innerhalb der naechsten 7 Tage.)\n"
+        f"Hallo Bhaiyaji,\n\n"
+        f"Tamari Dharmpatni mate ek veli appointment male chhe!\n\n"
+        f"  Navi appointment: {appt_date.strftime('%d.%m.%Y')}\n\n"
+        f"Joti hoy to jaldi lai le\n{BOOKING_URL}\n\n"
+        f"(Aa ek Automatic alert chhe!!)\n"
     )
+
 
     recipients = [ALERT_EMAIL]
     if ALERT_EMAIL2:
