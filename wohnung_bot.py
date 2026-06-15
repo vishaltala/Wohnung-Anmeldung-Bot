@@ -109,7 +109,7 @@ def navigate_and_get_date(driver) -> datetime | None:
     except Exception:
         print("  No Hinweis popup found (or already dismissed).")
     wait_sec(3)
-    BOOKING_URL = driver.current_url
+    global BOOKING_URL = driver.current_url
     print(f"  URL after OK: {driver.current_url}")
 
     print("Step 5: Parsing date...")
