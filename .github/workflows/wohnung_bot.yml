@@ -1,0 +1,31 @@
+name: Wohnungsanmeldung Bot
+
+on:
+  # Triggered externally by cron-job.org via GitHub API webhook
+  workflow_dispatch:
+
+jobs:
+  wohnung-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Run Wohnungsanmeldung Bot
+        env:
+          SMTP_USER:   ${{ secrets.SMTP_USER }}
+          SMTP_PASS:   ${{ secrets.SMTP_PASS }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+        run: python wohnung_bot.py
