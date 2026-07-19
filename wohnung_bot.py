@@ -128,7 +128,7 @@ def navigate_and_get_date(driver) -> tuple[datetime | None, str]:
 def send_alert(appt_date: datetime, booking_url: str) -> None:
     subject = "Early Appointment available - Wohnungsanmeldung - Kar jaldi Book!"
     body = (
-        f"Hallo Bhaiyaji,\n\n"
+        f"Hallo Smit,\n\n"
         f"Tamari Dharmpatni mate ek veli appointment male chhe!\n\n"
         f"  Navi appointment: {appt_date.strftime('%d.%m.%Y')}\n\n"
         f"Joti hoy to jaldi lai le\n{booking_url}\n\n"
